@@ -60,15 +60,41 @@ $
 
 以此类推
 
-## Total sum of squares
+## Total sum of squares within group 组内变异平方和
 
 $TSS = 30+8.67+47.2 = 85.87$
 
 ## Between group sum of squares
 
 ```
-bss = 4*(mean_A-mean_total)^2+3*(mean_B-mean_total)^2+5*(mean_C-mean_total)^2
+BSS = 4*(mean_A-mean_total)^2+3*(mean_B-mean_total)^2+5*(mean_C-mean_total)^2
 
 ```
 
 $BSS = n_A \times (\bar{X_A}-\bar{X_{Total}})^2 + n_B \times (\bar{X_B}-\bar{X_{Total}})^2 +n_C \times (\bar{X_C}-\bar{X_{Total}})^2=91.33$
+
+## 计算F值和p值
+
+```
+# 计算自由度
+df_between <- 3 - 1  # 组间自由度
+df_within <- 12 - 3  # 组内自由度
+
+# 计算均方
+MSB <- BSS / df_between
+MSW <- TSS / df_within
+
+# 计算 F 值
+F_value <- MSB / MSW
+
+# 计算 p 值
+p_value <- pf(F_value, df_between, df_within, lower.tail = FALSE)
+
+# 输出结果
+cat("组间均方 (MSB):", MSB, "\n")
+cat("组内均方 (MSW):", MSW, "\n")
+cat("F 值:", F_value, "\n")
+cat("p 值:", p_value, "\n")
+```
+p 值: 0.03857723 , 拒绝假设所有组均值相同
+
